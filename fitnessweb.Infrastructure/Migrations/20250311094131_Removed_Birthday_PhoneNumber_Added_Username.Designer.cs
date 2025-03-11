@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fitnessweb.Infrastructure;
 
@@ -11,9 +12,11 @@ using fitnessweb.Infrastructure;
 namespace fitnessweb.Infrastructure.Migrations
 {
     [DbContext(typeof(FitnessWebDbContext))]
-    partial class FitnessWebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311094131_Removed_Birthday_PhoneNumber_Added_Username")]
+    partial class Removed_Birthday_PhoneNumber_Added_Username
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

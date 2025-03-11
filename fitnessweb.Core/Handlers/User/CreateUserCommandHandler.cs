@@ -13,9 +13,8 @@ public class CreateUserCommandHandler(FitnessWebDbContext fitnessDbContext) : IR
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
-            PhoneNumber = request.PhoneNumber,
+            Username = request.Username,
             Password = request.Password,
-            Birthday = request.Birthday,
         };
 
         await fitnessDbContext.Users.AddAsync(user, cancellationToken);

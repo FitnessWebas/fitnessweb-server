@@ -26,11 +26,8 @@ public class UpdateUserCommandHandler(FitnessWebDbContext fitnessDbContext) : IR
         if (command.Password != null)
             user.Password = command.Password;
             
-        if (command.PhoneNumber != null)
-            user.PhoneNumber = command.PhoneNumber;
-            
-        if (command.Birthday.HasValue)
-            user.Birthday = command.Birthday.Value;
+        if (command.Username != null)
+            user.Username = command.Username;
 
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
 

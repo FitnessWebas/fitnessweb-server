@@ -5,5 +5,5 @@ namespace fitnessweb.Core.Queries;
 
 public class GetByUserIdUserMetricsQuery : IRequest<UserMetrics>
 {
-    public Guid UserId { get; set; }
+    public required Guid UserId { get; set; }
 }

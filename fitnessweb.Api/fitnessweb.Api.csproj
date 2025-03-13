@@ -28,4 +28,8 @@
       <ProjectReference Include="..\fitnessweb.Infrastructure\fitnessweb.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwroot\images\" />
+    </ItemGroup>
+
 </Project>

@@ -9,4 +9,5 @@ public class Exercise : Entity
     public required int TimeInMinutes { get; set; }
     public required FitnessLevel Difficulty { get; set; }
     public required ICollection<Muscle> Muscles { get; set; }
+    public string? ImagePath { get; set; }
 }

@@ -1,9 +1,9 @@
 ﻿namespace fitnessweb.Core.Queries;
 
-using fitnessweb.Domain.Entities;
+using Domain.Dtos;
 using MediatR;
 
-public class GetByIdMuscleQuery : IRequest<Muscle>
+public class GetByIdMuscleQuery : IRequest<MuscleInfoDto>
 {
     public required Guid Id { get; set; }
 }

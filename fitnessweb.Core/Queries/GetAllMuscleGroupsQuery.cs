@@ -1,6 +1,6 @@
 ﻿namespace fitnessweb.Core.Queries;
 
-using fitnessweb.Domain.Entities;
+using Domain.Dtos;
 using MediatR;
 
-public class GetAllMuscleGroupsQuery : IRequest<List<MuscleGroup>>;
+public class GetAllMuscleGroupsQuery : IRequest<List<MuscleGroupInfoDto>>;

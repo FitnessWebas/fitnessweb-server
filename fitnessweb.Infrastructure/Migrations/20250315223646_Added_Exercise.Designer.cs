@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fitnessweb.Infrastructure;
 
@@ -11,9 +12,11 @@ using fitnessweb.Infrastructure;
 namespace fitnessweb.Infrastructure.Migrations
 {
     [DbContext(typeof(FitnessWebDbContext))]
-    partial class FitnessWebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250315223646_Added_Exercise")]
+    partial class Added_Exercise
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace fitnessweb.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ExerciseMuscle", b =>
-                {
-                    b.Property<Guid>("ExercisesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MusclesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ExercisesId", "MusclesId");
-
-                    b.HasIndex("MusclesId");
-
-                    b.ToTable("ExerciseMuscle", (string)null);
-                });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Exercise", b =>
                 {
@@ -67,7 +55,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises", (string)null);
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Muscle", b =>
@@ -78,6 +66,9 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ExerciseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("datetime2");
@@ -94,11 +85,13 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ExerciseId");
+
                     b.HasIndex("MuscleGroupId");
 
                     b.HasIndex("WorkoutId");
 
-                    b.ToTable("Muscles", (string)null);
+                    b.ToTable("Muscles");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.MuscleGroup", b =>
@@ -119,7 +112,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MuscleGroups", (string)null);
+                    b.ToTable("MuscleGroups");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.User", b =>
@@ -156,7 +149,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.UserMetrics", b =>
@@ -192,7 +185,7 @@ namespace fitnessweb.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("UsersMetrics", (string)null);
+                    b.ToTable("UsersMetrics");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Workout", b =>
@@ -231,7 +224,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Workout", (string)null);
+                    b.ToTable("Workout");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.WorkoutExercise", b =>
@@ -270,26 +263,15 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("WorkoutId1");
 
-                    b.ToTable("WorkoutExercise", (string)null);
-                });
-
-            modelBuilder.Entity("ExerciseMuscle", b =>
-                {
-                    b.HasOne("fitnessweb.Domain.Entities.Exercise", null)
-                        .WithMany()
-                        .HasForeignKey("ExercisesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fitnessweb.Domain.Entities.Muscle", null)
-                        .WithMany()
-                        .HasForeignKey("MusclesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("WorkoutExercise");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Muscle", b =>
                 {
+                    b.HasOne("fitnessweb.Domain.Entities.Exercise", null)
+                        .WithMany("Muscles")
+                        .HasForeignKey("ExerciseId");
+
                     b.HasOne("fitnessweb.Domain.Entities.MuscleGroup", "MuscleGroup")
                         .WithMany("Muscles")
                         .HasForeignKey("MuscleGroupId")
@@ -338,6 +320,11 @@ namespace fitnessweb.Infrastructure.Migrations
                     b.Navigation("Exercise");
 
                     b.Navigation("Workout");
+                });
+
+            modelBuilder.Entity("fitnessweb.Domain.Entities.Exercise", b =>
+                {
+                    b.Navigation("Muscles");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.MuscleGroup", b =>

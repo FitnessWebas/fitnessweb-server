@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fitnessweb.Infrastructure;
 
@@ -11,9 +12,11 @@ using fitnessweb.Infrastructure;
 namespace fitnessweb.Infrastructure.Migrations
 {
     [DbContext(typeof(FitnessWebDbContext))]
-    partial class FitnessWebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250315234317_Added_exercises_list_property_to_muscle_entity")]
+    partial class Added_exercises_list_property_to_muscle_entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("MusclesId");
 
-                    b.ToTable("ExerciseMuscle", (string)null);
+                    b.ToTable("ExerciseMuscle");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Exercise", b =>
@@ -67,7 +70,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises", (string)null);
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Muscle", b =>
@@ -98,7 +101,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("WorkoutId");
 
-                    b.ToTable("Muscles", (string)null);
+                    b.ToTable("Muscles");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.MuscleGroup", b =>
@@ -119,7 +122,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MuscleGroups", (string)null);
+                    b.ToTable("MuscleGroups");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.User", b =>
@@ -156,7 +159,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.UserMetrics", b =>
@@ -192,7 +195,7 @@ namespace fitnessweb.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("UsersMetrics", (string)null);
+                    b.ToTable("UsersMetrics");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Workout", b =>
@@ -231,7 +234,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Workout", (string)null);
+                    b.ToTable("Workout");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.WorkoutExercise", b =>
@@ -270,7 +273,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("WorkoutId1");
 
-                    b.ToTable("WorkoutExercise", (string)null);
+                    b.ToTable("WorkoutExercise");
                 });
 
             modelBuilder.Entity("ExerciseMuscle", b =>

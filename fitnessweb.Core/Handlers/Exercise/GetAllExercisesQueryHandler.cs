@@ -10,7 +10,6 @@ public class GetAllExercisesQueryHandler(FitnessWebDbContext fitnessDbContext) :
     public async Task<List<Domain.Dtos.ExerciseInfoDto>> Handle(GetAllExercisesQuery request, CancellationToken cancellationToken)
     {
         return await fitnessDbContext.Exercises
-            .Include(e => e.Muscles)
             .Select(e => new Domain.Dtos.ExerciseInfoDto
             {
                 Id = e.Id,
@@ -25,6 +24,7 @@ public class GetAllExercisesQueryHandler(FitnessWebDbContext fitnessDbContext) :
                     Name = m.Name
                 }).ToList()
             })
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 }

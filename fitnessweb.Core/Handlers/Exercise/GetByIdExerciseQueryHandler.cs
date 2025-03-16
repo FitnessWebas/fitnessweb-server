@@ -11,7 +11,7 @@ public class GetByIdExerciseQueryHandler(FitnessWebDbContext fitnessDbContext) :
     {
         
         var exercise = await fitnessDbContext.Exercises
-            .Include(e => e.Muscles)
+            .Where(e => e.Id == request.Id)
             .Select(e => new Domain.Dtos.ExerciseInfoDto
             {
                 Id = e.Id,
@@ -26,7 +26,8 @@ public class GetByIdExerciseQueryHandler(FitnessWebDbContext fitnessDbContext) :
                     Name = m.Name
                 }).ToList()
             })
-            .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
         
         return exercise ?? throw new NullReferenceException("Exercise not found");
     }

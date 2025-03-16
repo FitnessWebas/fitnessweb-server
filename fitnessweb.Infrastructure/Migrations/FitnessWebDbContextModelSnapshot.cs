@@ -34,7 +34,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("MusclesId");
 
-                    b.ToTable("ExerciseMuscle");
+                    b.ToTable("ExerciseMuscle", (string)null);
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Exercise", b =>
@@ -67,7 +67,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercises", (string)null);
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Muscle", b =>
@@ -98,7 +98,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("WorkoutId");
 
-                    b.ToTable("Muscles");
+                    b.ToTable("Muscles", (string)null);
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.MuscleGroup", b =>
@@ -119,7 +119,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MuscleGroups");
+                    b.ToTable("MuscleGroups", (string)null);
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.User", b =>
@@ -156,7 +156,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.UserMetrics", b =>
@@ -192,7 +192,7 @@ namespace fitnessweb.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("UsersMetrics");
+                    b.ToTable("UsersMetrics", (string)null);
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Workout", b =>
@@ -231,7 +231,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Workout");
+                    b.ToTable("Workout", (string)null);
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.WorkoutExercise", b =>
@@ -270,7 +270,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("WorkoutId1");
 
-                    b.ToTable("WorkoutExercise");
+                    b.ToTable("WorkoutExercise", (string)null);
                 });
 
             modelBuilder.Entity("ExerciseMuscle", b =>

@@ -10,7 +10,6 @@ public class UpdateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
     public async Task<Unit> Handle(UpdateExerciseCommand command, CancellationToken cancellationToken)
     {
         var exercise = await fitnessDbContext.Exercises
-            .Include(e => e.Muscles)
             .FirstOrDefaultAsync(e => e.Id == command.ExerciseId, cancellationToken);
         
         if (exercise == null)

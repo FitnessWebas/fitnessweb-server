@@ -26,6 +26,12 @@ public class UpdateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
             
         if (command.Difficulty.HasValue)
             exercise.Difficulty = command.Difficulty.Value;
+        
+        if (!string.IsNullOrEmpty(command.StartingPositionDescription))
+            exercise.StartingPositionDescription = command.StartingPositionDescription;
+        
+        if (!string.IsNullOrEmpty(command.ExecutionDescription))
+            exercise.ExecutionDescription = command.ExecutionDescription;
             
         if (command.MuscleNames != null && command.MuscleNames.Any())
         {

@@ -9,6 +9,8 @@ public class ExerciseInfoDto
     public Equipment Equipment { get; set; }
     public int MinutesPerSet { get; set; }
     public FitnessLevel Difficulty { get; set; }
+    public string StartingPositionDescription { get; set; }
+    public string ExecutionDescription { get; set; }
     public string ImagePath { get; set; }
     public List<MuscleDto> Muscles { get; set; }
 }

@@ -24,6 +24,8 @@ public class CreateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
             Equipment = request.Equipment,
             MinutesPerSet = request.MinutesPerSet,
             Difficulty = request.Difficulty,
+            StartingPositionDescription = request.StartingPositionDescription,
+            ExecutionDescription = request.ExecutionDescription,
             Muscles = muscles,
             ImagePath = request.ImagePath
         };

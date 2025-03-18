@@ -11,6 +11,8 @@ public class UpdateExerciseCommand : IRequest<Unit>
     public Equipment? Equipment { get; set; }
     public int? MinutesPerSet { get; set; }
     public FitnessLevel? Difficulty { get; set; }
+    public string? StartingPositionDescription { get; set; }
+    public string? ExecutionDescription { get; set; }
     public List<String>? MuscleNames { get; set; }
     public string? ImagePath { get; set; }
 }

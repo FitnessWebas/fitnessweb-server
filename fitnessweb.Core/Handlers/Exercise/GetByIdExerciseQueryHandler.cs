@@ -19,6 +19,8 @@ public class GetByIdExerciseQueryHandler(FitnessWebDbContext fitnessDbContext) :
                 Equipment = e.Equipment,
                 MinutesPerSet = e.MinutesPerSet,
                 Difficulty = e.Difficulty,
+                StartingPositionDescription = e.StartingPositionDescription,
+                ExecutionDescription = e.ExecutionDescription,
                 ImagePath = e.ImagePath,
                 Muscles = e.Muscles.Select(m => new Domain.Dtos.MuscleDto
                 {

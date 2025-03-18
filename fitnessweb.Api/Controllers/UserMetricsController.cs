@@ -17,6 +17,12 @@ public class UserMetricsController : BaseController
     public async Task<IActionResult> GetById([FromQuery] GetByUserIdUserMetricsQuery query)
     {
         var result = await Mediator.Send(query);
+
+        if (result is null)
+        {
+            return NoContent();
+        }
+        
         return Ok(result);
     }
     

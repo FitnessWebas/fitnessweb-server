@@ -240,7 +240,7 @@ namespace fitnessweb.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Workout");
+                    b.ToTable("Workouts");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.WorkoutExercise", b =>
@@ -252,10 +252,7 @@ namespace fitnessweb.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ExerciseId1")
+                    b.Property<Guid>("ExerciseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastModifiedAt")
@@ -267,19 +264,16 @@ namespace fitnessweb.Infrastructure.Migrations
                     b.Property<int>("Sets")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkoutId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("WorkoutId1")
+                    b.Property<Guid?>("WorkoutId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExerciseId1");
+                    b.HasIndex("ExerciseId");
 
-                    b.HasIndex("WorkoutId1");
+                    b.HasIndex("WorkoutId");
 
-                    b.ToTable("WorkoutExercise");
+                    b.ToTable("WorkoutExercises");
                 });
 
             modelBuilder.Entity("ExerciseMuscle", b =>
@@ -334,19 +328,15 @@ namespace fitnessweb.Infrastructure.Migrations
                 {
                     b.HasOne("fitnessweb.Domain.Entities.Exercise", "Exercise")
                         .WithMany()
-                        .HasForeignKey("ExerciseId1")
+                        .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("fitnessweb.Domain.Entities.Workout", "Workout")
+                    b.HasOne("fitnessweb.Domain.Entities.Workout", null)
                         .WithMany("WorkoutExercises")
-                        .HasForeignKey("WorkoutId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WorkoutId");
 
                     b.Navigation("Exercise");
-
-                    b.Navigation("Workout");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.MuscleGroup", b =>

@@ -1,4 +1,6 @@
-﻿using fitnessweb.Core.Commands;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using fitnessweb.Core.Commands;
 using fitnessweb.Core.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +20,28 @@ public class WorkoutController : BaseController
     public async Task<IActionResult> GetAll([FromQuery] GetAllWorkoutsQuery query)
     {
         var result = await Mediator.Send(query);
-        return Ok(result);
+        var options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
+
+        var json = JsonSerializer.Serialize(result, options);
+
+        return Content(json, "application/json");
     }
 
     [HttpGet("GetById")]
     public async Task<IActionResult> GetById([FromQuery] GetByIdWorkoutQuery query)
     {
         var result = await Mediator.Send(query);
-        return Ok(result);
+        var options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
+
+        var json = JsonSerializer.Serialize(result, options);
+
+        return Content(json, "application/json");
     }
     
     [HttpPatch("Update")]

@@ -11,6 +11,7 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
     public async Task<Unit> Handle(UpdateWorkoutCommand command, CancellationToken cancellationToken)
     {
         var workout = await fitnessDbContext.Workouts
+            .Include(W => W.MuscleGroups)
             .Include(w => w.WorkoutExercises)
             .FirstOrDefaultAsync(e => e.Id == command.WorkoutId, cancellationToken);
         
@@ -74,22 +75,26 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
                 }
             }
             
-            var updatedExerciseIds = workout.WorkoutExercises.Select(we => we.ExerciseId).ToList();
-
+            var updatedExerciseIds = command.WorkoutExercises.Select(dto => dto.ExerciseId).ToList();
+            
             var updatedExercises = await fitnessDbContext.Exercises
                 .Include(e => e.Muscles)
                 .ThenInclude(m => m.MuscleGroup)
                 .Where(e => updatedExerciseIds.Contains(e.Id))
                 .ToListAsync(cancellationToken);
-
+            
             var updatedMuscleGroups = updatedExercises
                 .SelectMany(e => e.Muscles)
                 .Select(m => m.MuscleGroup)
                 .Where(mg => mg != null)
                 .Distinct()
                 .ToList();
-
-            workout.MuscleGroups = updatedMuscleGroups;
+            
+            workout.MuscleGroups.Clear();
+            foreach (var mg in updatedMuscleGroups)
+            {
+                workout.MuscleGroups.Add(mg);
+            }
         }
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
         return Unit.Value;

@@ -38,16 +38,27 @@ public class CreateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
             RepsPerSet = dto.RepsPerSet
         }).ToList();
         
+        var difficulty = exercises.Max(e => e.Difficulty);
+        var equipment = exercises
+            .Select(e => e.Equipment)
+            .Distinct()
+            .ToList();
+
+        var duration = workoutExercises.Sum(workoutExercise =>
+        {
+            var exercise = workoutExercise.Exercise;
+            return exercise != null ? workoutExercise.Sets * exercise.MinutesPerSet : 0;
+        });
         
         var workout = new Domain.Entities.Workout
         {
             UserId = request.UserId,
             Name = request.Name,
-            Difficulty = request.Difficulty,
-            TargetDurationMinutes = request.TargetDurationMinutes,
+            Difficulty = difficulty,
+            TargetDurationMinutes = duration,
             Goal = request.Goal,
             MuscleGroups = muscleGroups,
-            Equipment = request.Equipment,
+            Equipment = equipment,
             WorkoutExercises = workoutExercises
         };
         

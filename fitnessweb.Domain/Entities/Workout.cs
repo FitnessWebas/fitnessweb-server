@@ -11,6 +11,5 @@ public class Workout : Entity
     public required int TargetDurationMinutes { get; set; }
     public required ICollection<Equipment> Equipment { get; set; }
     public required Goal Goal { get; set; }
-    
     public required ICollection<WorkoutExercise> WorkoutExercises { get; set; }
 }

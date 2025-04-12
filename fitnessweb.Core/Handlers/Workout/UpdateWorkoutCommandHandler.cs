@@ -23,18 +23,9 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
         
         if (!string.IsNullOrEmpty(command.Name))
             workout.Name = command.Name;
-            
-        if (command.Difficulty.HasValue)
-            workout.Difficulty = command.Difficulty.Value;
         
         if (command.Goal.HasValue)
             workout.Goal = command.Goal.Value;
-        
-        if (command.TargetDurationMinutes.HasValue)
-            workout.TargetDurationMinutes = command.TargetDurationMinutes.Value;
-        
-        if (command.Equipment != null && command.Equipment.Any())
-            workout.Equipment = command.Equipment;
         
         if (command.WorkoutExercises != null && command.WorkoutExercises.Any())
         {
@@ -83,6 +74,18 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
                 .Where(e => updatedExerciseIds.Contains(e.Id))
                 .ToListAsync(cancellationToken);
             
+            var difficulty = updatedExercises.Max(e => e.Difficulty);
+            
+            var equipment = updatedExercises
+                .Select(e => e.Equipment)
+                .Distinct()
+                .ToList();
+            var duration = workout.WorkoutExercises.Sum(workoutExercise =>
+            {
+                var exercise = workoutExercise.Exercise;
+                return exercise != null ? workoutExercise.Sets * exercise.MinutesPerSet : 0;
+            });
+            
             var updatedMuscleGroups = updatedExercises
                 .SelectMany(e => e.Muscles)
                 .Select(m => m.MuscleGroup)
@@ -95,6 +98,10 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
             {
                 workout.MuscleGroups.Add(mg);
             }
+            
+            workout.Difficulty = difficulty;
+            workout.Equipment = equipment;
+            workout.TargetDurationMinutes = duration;
         }
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
         return Unit.Value;

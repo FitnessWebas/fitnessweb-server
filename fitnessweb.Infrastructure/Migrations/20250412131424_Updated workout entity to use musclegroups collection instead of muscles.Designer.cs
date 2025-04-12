@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fitnessweb.Infrastructure;
 
@@ -11,9 +12,11 @@ using fitnessweb.Infrastructure;
 namespace fitnessweb.Infrastructure.Migrations
 {
     [DbContext(typeof(FitnessWebDbContext))]
-    partial class FitnessWebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412131424_Updated workout entity to use musclegroups collection instead of muscles")]
+    partial class Updatedworkoutentitytousemusclegroupscollectioninsteadofmuscles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +38,6 @@ namespace fitnessweb.Infrastructure.Migrations
                     b.HasIndex("MusclesId");
 
                     b.ToTable("ExerciseMuscle");
-                });
-
-            modelBuilder.Entity("MuscleGroupWorkout", b =>
-                {
-                    b.Property<Guid>("MuscleGroupsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("WorkoutsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("MuscleGroupsId", "WorkoutsId");
-
-                    b.HasIndex("WorkoutsId");
-
-                    b.ToTable("MuscleGroupWorkout");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Exercise", b =>
@@ -136,7 +124,12 @@ namespace fitnessweb.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("WorkoutId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkoutId");
 
                     b.ToTable("MuscleGroups");
                 });
@@ -301,21 +294,6 @@ namespace fitnessweb.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MuscleGroupWorkout", b =>
-                {
-                    b.HasOne("fitnessweb.Domain.Entities.MuscleGroup", null)
-                        .WithMany()
-                        .HasForeignKey("MuscleGroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fitnessweb.Domain.Entities.Workout", null)
-                        .WithMany()
-                        .HasForeignKey("WorkoutsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("fitnessweb.Domain.Entities.Muscle", b =>
                 {
                     b.HasOne("fitnessweb.Domain.Entities.MuscleGroup", "MuscleGroup")
@@ -325,6 +303,13 @@ namespace fitnessweb.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("MuscleGroup");
+                });
+
+            modelBuilder.Entity("fitnessweb.Domain.Entities.MuscleGroup", b =>
+                {
+                    b.HasOne("fitnessweb.Domain.Entities.Workout", null)
+                        .WithMany("MuscleGroups")
+                        .HasForeignKey("WorkoutId");
                 });
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.UserMetrics", b =>
@@ -374,6 +359,8 @@ namespace fitnessweb.Infrastructure.Migrations
 
             modelBuilder.Entity("fitnessweb.Domain.Entities.Workout", b =>
                 {
+                    b.Navigation("MuscleGroups");
+
                     b.Navigation("WorkoutExercises");
                 });
 #pragma warning restore 612, 618

@@ -14,9 +14,10 @@ public class GetByIdWorkoutQueryHandler(FitnessWebDbContext fitnessDbContext) : 
             throw new ArgumentException($"No workout id provided.");
         
         var workout = await fitnessDbContext.Workouts
-            .Include(w => w.Muscles)
+            .Include(w => w.MuscleGroups)
             .Include(w => w.WorkoutExercises)
-            .ThenInclude(we => we.Exercise) // 🔥 Ensure Exercise is loaded
+            .ThenInclude(we => we.Exercise) 
+            .AsNoTracking()
             .FirstOrDefaultAsync(w => w.Id == request.Id, cancellationToken);
 
         return workout ?? throw new Exception($"Workout id: {request.Id} does not exist.");

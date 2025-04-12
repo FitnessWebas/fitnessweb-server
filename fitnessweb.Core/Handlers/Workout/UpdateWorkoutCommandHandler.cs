@@ -35,18 +35,6 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
         if (command.Equipment != null && command.Equipment.Any())
             workout.Equipment = command.Equipment;
         
-        if (command.MuscleNames != null && command.MuscleNames.Any())
-        {
-            var muscles = await fitnessDbContext.Muscles
-                .Where(m => command.MuscleNames.Contains(m.Name))
-                .ToListAsync(cancellationToken);
-
-            if (muscles.Count != command.MuscleNames.Count)
-                throw new Exception("Some muscles were not found in the database.");
-
-            workout.Muscles = muscles;
-        }
-        
         if (command.WorkoutExercises != null && command.WorkoutExercises.Any())
         {
             var existingWorkoutExercises = workout.WorkoutExercises.ToList();
@@ -85,6 +73,23 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
                     fitnessDbContext.WorkoutExercises.Add(newWorkoutExercise);
                 }
             }
+            
+            var updatedExerciseIds = workout.WorkoutExercises.Select(we => we.ExerciseId).ToList();
+
+            var updatedExercises = await fitnessDbContext.Exercises
+                .Include(e => e.Muscles)
+                .ThenInclude(m => m.MuscleGroup)
+                .Where(e => updatedExerciseIds.Contains(e.Id))
+                .ToListAsync(cancellationToken);
+
+            var updatedMuscleGroups = updatedExercises
+                .SelectMany(e => e.Muscles)
+                .Select(m => m.MuscleGroup)
+                .Where(mg => mg != null)
+                .Distinct()
+                .ToList();
+
+            workout.MuscleGroups = updatedMuscleGroups;
         }
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
         return Unit.Value;

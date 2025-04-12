@@ -10,9 +10,10 @@ public class GetAllWorkoutsQueryHandler(FitnessWebDbContext fitnessDbContext) : 
     public async Task<List<Domain.Entities.Workout>> Handle(GetAllWorkoutsQuery request, CancellationToken cancellationToken)
     {
         return await fitnessDbContext.Workouts
-            .Include(m => m.Muscles)
+            .Include(m => m.MuscleGroups)
             .Include(w => w.WorkoutExercises)
-            .ThenInclude(we => we.Exercise) // 🔥 Add this line to load the Exercise!
+            .ThenInclude(we => we.Exercise)
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 }

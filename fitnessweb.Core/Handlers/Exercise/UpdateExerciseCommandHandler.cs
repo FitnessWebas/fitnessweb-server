@@ -21,8 +21,8 @@ public class UpdateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
         if (command.Equipment.HasValue)
             exercise.Equipment = command.Equipment.Value;
             
-        if (command.MinutesPerSet.HasValue)
-            exercise.MinutesPerSet = command.MinutesPerSet.Value;
+        if (command.SecondsPerSet.HasValue)
+            exercise.SecondsPerSet = command.SecondsPerSet.Value;
             
         if (command.Difficulty.HasValue)
             exercise.Difficulty = command.Difficulty.Value;

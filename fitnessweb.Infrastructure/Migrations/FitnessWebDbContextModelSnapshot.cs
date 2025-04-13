@@ -78,12 +78,12 @@ namespace fitnessweb.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MinutesPerSet")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SecondsPerSet")
+                        .HasColumnType("int");
 
                     b.Property<string>("StartingPositionDescription")
                         .IsRequired()

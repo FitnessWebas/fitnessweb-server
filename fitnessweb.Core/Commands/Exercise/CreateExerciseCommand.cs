@@ -8,7 +8,7 @@ public class CreateExerciseCommand : IRequest<Unit>
 {
     public required string Name { get; set; }
     public required Equipment Equipment { get; set; }
-    public required int MinutesPerSet { get; set; }
+    public required int SecondsPerSet { get; set; }
     public required FitnessLevel Difficulty { get; set; }
     public required string StartingPositionDescription { get; set; }
     public required string ExecutionDescription { get; set; }

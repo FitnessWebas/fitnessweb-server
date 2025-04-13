@@ -83,8 +83,8 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
             var duration = workout.WorkoutExercises.Sum(workoutExercise =>
             {
                 var exercise = workoutExercise.Exercise;
-                return exercise != null ? workoutExercise.Sets * exercise.MinutesPerSet : 0;
-            });
+                return exercise != null ? workoutExercise.Sets * exercise.SecondsPerSet : 0;
+            }) / 60;
             
             var updatedMuscleGroups = updatedExercises
                 .SelectMany(e => e.Muscles)

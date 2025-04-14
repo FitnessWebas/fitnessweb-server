@@ -15,7 +15,7 @@ public class GetAllExercisesQueryHandler(FitnessWebDbContext fitnessDbContext) :
                 Id = e.Id,
                 Name = e.Name,
                 Equipment = e.Equipment,
-                MinutesPerSet = e.MinutesPerSet,
+                SecondsPerSet = e.SecondsPerSet,
                 Difficulty = e.Difficulty,
                 StartingPositionDescription = e.StartingPositionDescription,
                 ExecutionDescription = e.ExecutionDescription,

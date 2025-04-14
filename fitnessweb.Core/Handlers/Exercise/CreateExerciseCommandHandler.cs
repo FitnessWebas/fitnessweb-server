@@ -22,7 +22,7 @@ public class CreateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
         {
             Name = request.Name,
             Equipment = request.Equipment,
-            MinutesPerSet = request.MinutesPerSet,
+            SecondsPerSet = request.SecondsPerSet,
             Difficulty = request.Difficulty,
             StartingPositionDescription = request.StartingPositionDescription,
             ExecutionDescription = request.ExecutionDescription,

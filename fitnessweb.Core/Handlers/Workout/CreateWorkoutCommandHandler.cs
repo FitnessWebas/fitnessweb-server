@@ -47,8 +47,8 @@ public class CreateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
         var duration = workoutExercises.Sum(workoutExercise =>
         {
             var exercise = workoutExercise.Exercise;
-            return exercise != null ? workoutExercise.Sets * exercise.MinutesPerSet : 0;
-        });
+            return exercise != null ? workoutExercise.Sets * exercise.SecondsPerSet : 0;
+        }) / 60;
         
         var workout = new Domain.Entities.Workout
         {

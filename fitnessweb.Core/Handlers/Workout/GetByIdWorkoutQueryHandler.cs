@@ -34,6 +34,12 @@ public class GetByIdWorkoutQueryHandler(FitnessWebDbContext fitnessDbContext) : 
                     {
                         ExerciseId = e.ExerciseId,
                         ExerciseName = e.Exercise.Name,
+                        Equipment = e.Exercise.Equipment,
+                        Muscles = e.Exercise.Muscles.Select(m => new Domain.Dtos.MuscleDto
+                        {
+                            Id = m.Id,
+                            Name = m.Name
+                        }).ToList(),
                         Sets = e.Sets,
                         RepsPerSet = e.RepsPerSet,
                     }).ToList(),

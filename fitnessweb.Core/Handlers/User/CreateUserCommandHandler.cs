@@ -1,4 +1,5 @@
 using fitnessweb.Core.Commands;
+using fitnessweb.Core.Helpers;
 using fitnessweb.Infrastructure;
 using MediatR;
 
@@ -8,13 +9,15 @@ public class CreateUserCommandHandler(FitnessWebDbContext fitnessDbContext) : IR
 {
     public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        string hashedPassword = PasswordHasher.Hash(request.Password);
+        
         var user = new Domain.Entities.User
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
             Username = request.Username,
-            Password = request.Password,
+            Password = hashedPassword
         };
 
         await fitnessDbContext.Users.AddAsync(user, cancellationToken);

@@ -11,6 +11,7 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
     public async Task<Unit> Handle(UpdateWorkoutCommand command, CancellationToken cancellationToken)
     {
         var workout = await fitnessDbContext.Workouts
+            .Include(W => W.MuscleGroups)
             .Include(w => w.WorkoutExercises)
             .FirstOrDefaultAsync(e => e.Id == command.WorkoutId, cancellationToken);
         
@@ -22,30 +23,9 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
         
         if (!string.IsNullOrEmpty(command.Name))
             workout.Name = command.Name;
-            
-        if (command.Difficulty.HasValue)
-            workout.Difficulty = command.Difficulty.Value;
         
         if (command.Goal.HasValue)
             workout.Goal = command.Goal.Value;
-        
-        if (command.TargetDurationMinutes.HasValue)
-            workout.TargetDurationMinutes = command.TargetDurationMinutes.Value;
-        
-        if (command.Equipment != null && command.Equipment.Any())
-            workout.Equipment = command.Equipment;
-        
-        if (command.MuscleNames != null && command.MuscleNames.Any())
-        {
-            var muscles = await fitnessDbContext.Muscles
-                .Where(m => command.MuscleNames.Contains(m.Name))
-                .ToListAsync(cancellationToken);
-
-            if (muscles.Count != command.MuscleNames.Count)
-                throw new Exception("Some muscles were not found in the database.");
-
-            workout.Muscles = muscles;
-        }
         
         if (command.WorkoutExercises != null && command.WorkoutExercises.Any())
         {
@@ -85,6 +65,43 @@ public class UpdateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
                     fitnessDbContext.WorkoutExercises.Add(newWorkoutExercise);
                 }
             }
+            
+            var updatedExerciseIds = command.WorkoutExercises.Select(dto => dto.ExerciseId).ToList();
+            
+            var updatedExercises = await fitnessDbContext.Exercises
+                .Include(e => e.Muscles)
+                .ThenInclude(m => m.MuscleGroup)
+                .Where(e => updatedExerciseIds.Contains(e.Id))
+                .ToListAsync(cancellationToken);
+            
+            var difficulty = updatedExercises.Max(e => e.Difficulty);
+            
+            var equipment = updatedExercises
+                .Select(e => e.Equipment)
+                .Distinct()
+                .ToList();
+            var duration = workout.WorkoutExercises.Sum(workoutExercise =>
+            {
+                var exercise = workoutExercise.Exercise;
+                return exercise != null ? workoutExercise.Sets * exercise.SecondsPerSet : 0;
+            }) / 60;
+            
+            var updatedMuscleGroups = updatedExercises
+                .SelectMany(e => e.Muscles)
+                .Select(m => m.MuscleGroup)
+                .Where(mg => mg != null)
+                .Distinct()
+                .ToList();
+            
+            workout.MuscleGroups.Clear();
+            foreach (var mg in updatedMuscleGroups)
+            {
+                workout.MuscleGroups.Add(mg);
+            }
+            
+            workout.Difficulty = difficulty;
+            workout.Equipment = equipment;
+            workout.TargetDurationMinutes = duration;
         }
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
         return Unit.Value;

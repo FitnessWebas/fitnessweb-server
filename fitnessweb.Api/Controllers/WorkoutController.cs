@@ -1,6 +1,5 @@
 ﻿using fitnessweb.Core.Commands;
 using fitnessweb.Core.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fitnessweb.Api.Controllers;

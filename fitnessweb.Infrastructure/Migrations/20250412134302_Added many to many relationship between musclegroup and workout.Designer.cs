@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fitnessweb.Infrastructure;
 
@@ -11,9 +12,11 @@ using fitnessweb.Infrastructure;
 namespace fitnessweb.Infrastructure.Migrations
 {
     [DbContext(typeof(FitnessWebDbContext))]
-    partial class FitnessWebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412134302_Added many to many relationship between musclegroup and workout")]
+    partial class Addedmanytomanyrelationshipbetweenmusclegroupandworkout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,12 +81,12 @@ namespace fitnessweb.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MinutesPerSet")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SecondsPerSet")
-                        .HasColumnType("int");
 
                     b.Property<string>("StartingPositionDescription")
                         .IsRequired()

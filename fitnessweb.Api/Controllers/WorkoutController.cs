@@ -12,6 +12,13 @@ public class WorkoutController : BaseController
         var result = await Mediator.Send(command);
         return Ok(result);
     }
+    
+    [HttpPost("Generate")]
+    public async Task<IActionResult> Generate(GenerateWorkoutCommand command)
+    {
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
 
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll([FromQuery] GetAllWorkoutsQuery query)

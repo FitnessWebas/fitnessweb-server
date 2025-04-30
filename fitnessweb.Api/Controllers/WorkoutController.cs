@@ -34,6 +34,13 @@ public class WorkoutController : BaseController
         return Ok(result);
     }
     
+    [HttpGet("GetByUserId")]
+    public async Task<IActionResult> GetById([FromQuery] GetByUserIdWorkoutsQuery query)
+    {
+        var result = await Mediator.Send(query);
+        return Ok(result);
+    }
+    
     [HttpPatch("Update")]
     public async Task<IActionResult> Update(UpdateWorkoutCommand command)
     {

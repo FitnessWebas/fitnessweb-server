@@ -10,5 +10,5 @@ public class CreateWorkoutCommand : IRequest<Unit>
     public required Guid UserId { get; set; }
     public required string Name { get; set; }
     public required Goal Goal { get; set; }
-    public required ICollection<WorkoutExerciseDto> Exercises { get; set; }
+    public required ICollection<CreateWorkoutExerciseDto> Exercises { get; set; }
 }

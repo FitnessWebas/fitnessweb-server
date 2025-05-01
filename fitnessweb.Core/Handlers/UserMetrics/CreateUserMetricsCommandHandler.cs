@@ -11,10 +11,10 @@ public class CreateUserMetricsCommandHandler(FitnessWebDbContext fitnessDbContex
     {
         var userMetricAlreadyExists = await fitnessDbContext.UsersMetrics
             .AnyAsync(u => u.UserId == request.UserId, cancellationToken);
-        
+
         if (userMetricAlreadyExists)
             throw new Exception($"UserMetrics for userId \"{request.UserId}\" already exists.");
-        
+
         var userMetrics = new Domain.Entities.UserMetrics
         {
             UserId = request.UserId,
@@ -26,7 +26,7 @@ public class CreateUserMetricsCommandHandler(FitnessWebDbContext fitnessDbContex
 
         await fitnessDbContext.UsersMetrics.AddAsync(userMetrics, cancellationToken);
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
-        
+
         return Unit.Value;
     }
 }

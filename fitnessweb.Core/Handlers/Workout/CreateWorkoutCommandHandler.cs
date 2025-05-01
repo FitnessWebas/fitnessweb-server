@@ -11,7 +11,7 @@ public class CreateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
     public async Task<Unit> Handle(CreateWorkoutCommand request, CancellationToken cancellationToken)
     {
         var exerciseIds = request.Exercises.Select(e => e.ExerciseId).ToList();
-        
+
         var exercises = await fitnessDbContext.Exercises
             .Include(e => e.Muscles)
             .ThenInclude(e => e.MuscleGroup)
@@ -28,8 +28,8 @@ public class CreateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
             .Select(m => m.MuscleGroup)
             .Distinct()
             .ToList();
-        
-        
+
+
         var workoutExercises = request.Exercises.Select(dto => new WorkoutExercise
         {
             ExerciseId = dto.ExerciseId,
@@ -37,7 +37,7 @@ public class CreateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
             Sets = dto.Sets,
             RepsPerSet = dto.RepsPerSet
         }).ToList();
-        
+
         var difficulty = exercises.Max(e => e.Difficulty);
         var equipment = exercises
             .Select(e => e.Equipment)
@@ -49,7 +49,7 @@ public class CreateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
             var exercise = workoutExercise.Exercise;
             return exercise != null ? workoutExercise.Sets * exercise.SecondsPerSet : 0;
         }) / 60;
-        
+
         var workout = new Domain.Entities.Workout
         {
             UserId = request.UserId,
@@ -61,7 +61,7 @@ public class CreateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext) :
             Equipment = equipment,
             WorkoutExercises = workoutExercises
         };
-        
+
         await fitnessDbContext.Workouts.AddAsync(workout, cancellationToken);
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
 

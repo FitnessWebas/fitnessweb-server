@@ -13,7 +13,7 @@ public class MuscleController : BaseController
     public async Task<IActionResult> GetAll([FromQuery] GetAllMusclesQuery query)
     {
         var result = await Mediator.Send(query);
-        
+
         var options = new JsonSerializerOptions
         {
             ReferenceHandler = ReferenceHandler.IgnoreCycles
@@ -28,7 +28,7 @@ public class MuscleController : BaseController
     public async Task<IActionResult> GetById([FromQuery] GetByIdMuscleQuery query)
     {
         var result = await Mediator.Send(query);
-        
+
         var options = new JsonSerializerOptions
         {
             ReferenceHandler = ReferenceHandler.IgnoreCycles
@@ -36,6 +36,6 @@ public class MuscleController : BaseController
 
         var json = JsonSerializer.Serialize(result, options);
 
-        return Content(json, "application/json");;
+        return Content(json, "application/json"); ;
     }
 }

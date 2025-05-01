@@ -12,12 +12,12 @@ public class VerifyPasswordCommandHandler(FitnessWebDbContext fitnessDbContext) 
     {
         var user = await fitnessDbContext.Users.
             FirstOrDefaultAsync(u => u.Username == request.Username, cancellationToken);
-        
+
         if (user == null)
         {
             throw new UnauthorizedAccessException("Invalid username.");
         }
-        
+
         return PasswordHasher.Verify(request.Password, user.Password);
     }
 }

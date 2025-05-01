@@ -22,4 +22,4 @@ public class GetAllMusclesQueryHandler(FitnessWebDbContext fitnessDbContext) : I
     }
 }
 
-    
+

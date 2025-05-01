@@ -12,7 +12,7 @@ public class WorkoutController : BaseController
         var result = await Mediator.Send(command);
         return Ok(result);
     }
-    
+
     [HttpPost("Generate")]
     public async Task<IActionResult> Generate(GenerateWorkoutCommand command)
     {
@@ -33,14 +33,14 @@ public class WorkoutController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpGet("GetByUserId")]
     public async Task<IActionResult> GetById([FromQuery] GetByUserIdWorkoutsQuery query)
     {
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpPatch("Update")]
     public async Task<IActionResult> Update(UpdateWorkoutCommand command)
     {

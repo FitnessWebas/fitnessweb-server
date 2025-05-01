@@ -12,8 +12,8 @@ public class GetByUserIdWorkoutsQueryHandler(FitnessWebDbContext fitnessDbContex
     {
         if (request.UserId == Guid.Empty)
             throw new ArgumentException($"No User id provided.");
-        
-        var workouts =  await fitnessDbContext.Workouts
+
+        var workouts = await fitnessDbContext.Workouts
             .Where(w => w.UserId == request.UserId)
             .Select(w => new Domain.Dtos.WorkoutInfoDto
             {
@@ -46,8 +46,8 @@ public class GetByUserIdWorkoutsQueryHandler(FitnessWebDbContext fitnessDbContex
             })
             .AsNoTracking()
             .ToListAsync(cancellationToken);
-        
-        
+
+
         return workouts ?? throw new Exception($"User id: {request.UserId} not found or the user has no workouts");
     }
 }

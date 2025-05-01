@@ -12,12 +12,12 @@ public class CreateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
         var muscles = await fitnessDbContext.Muscles
             .Where(m => request.MuscleNames.Contains(m.Name))
             .ToListAsync(cancellationToken);
-        
+
         if (muscles.Count != request.MuscleNames.Count)
         {
             throw new Exception("Some muscles were not found in the database.");
         }
-        
+
         var exercise = new Domain.Entities.Exercise
         {
             Name = request.Name,
@@ -32,7 +32,7 @@ public class CreateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
 
         await fitnessDbContext.Exercises.AddAsync(exercise, cancellationToken);
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
-        
+
         return Unit.Value;
     }
 }

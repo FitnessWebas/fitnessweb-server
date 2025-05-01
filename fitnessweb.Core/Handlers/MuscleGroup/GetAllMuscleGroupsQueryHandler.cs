@@ -21,7 +21,7 @@ public class GetAllMuscleGroupsQueryHandler(FitnessWebDbContext fitnessDbContext
                         Id = ms.Id,
                         Name = ms.Name
                     })
-                    .ToList() 
+                    .ToList()
             })
             .ToListAsync(cancellationToken);
     }

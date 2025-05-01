@@ -22,10 +22,10 @@ public class UserMetricsController : BaseController
         {
             return NoContent();
         }
-        
+
         return Ok(result);
     }
-    
+
     [HttpPatch("Update")]
     public async Task<IActionResult> Update(UpdateUserMetricsCommand command)
     {

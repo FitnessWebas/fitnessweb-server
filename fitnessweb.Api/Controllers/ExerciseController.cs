@@ -27,7 +27,7 @@ public class ExerciseController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpPatch("Update")]
     public async Task<IActionResult> Update(UpdateExerciseCommand command)
     {

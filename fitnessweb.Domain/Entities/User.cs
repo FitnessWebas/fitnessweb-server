@@ -8,6 +8,5 @@ public class User : Entity
     public required string Password { get; set; }
     public required string Username { get; set; }
     public UserMetrics? Metric { get; set; }
-    
     public ICollection<Workout>? Workouts { get; set; }
 }

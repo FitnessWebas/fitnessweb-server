@@ -11,28 +11,28 @@ public class UpdateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
     {
         var exercise = await fitnessDbContext.Exercises
             .FirstOrDefaultAsync(e => e.Id == command.ExerciseId, cancellationToken);
-        
+
         if (exercise == null)
             throw new Exception($"Exercise with ID {command.ExerciseId} not found");
-        
+
         if (!string.IsNullOrEmpty(command.Name))
             exercise.Name = command.Name;
-            
+
         if (command.Equipment.HasValue)
             exercise.Equipment = command.Equipment.Value;
-            
+
         if (command.SecondsPerSet.HasValue)
             exercise.SecondsPerSet = command.SecondsPerSet.Value;
-            
+
         if (command.Difficulty.HasValue)
             exercise.Difficulty = command.Difficulty.Value;
-        
+
         if (!string.IsNullOrEmpty(command.StartingPositionDescription))
             exercise.StartingPositionDescription = command.StartingPositionDescription;
-        
+
         if (!string.IsNullOrEmpty(command.ExecutionDescription))
             exercise.ExecutionDescription = command.ExecutionDescription;
-            
+
         if (command.MuscleNames != null && command.MuscleNames.Any())
         {
             var muscles = await fitnessDbContext.Muscles
@@ -44,10 +44,10 @@ public class UpdateExerciseCommandHandler(FitnessWebDbContext fitnessDbContext) 
 
             exercise.Muscles = muscles;
         }
-        
+
         if (!string.IsNullOrEmpty(command.ImagePath))
             exercise.ImagePath = command.ImagePath;
-        
+
 
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
 

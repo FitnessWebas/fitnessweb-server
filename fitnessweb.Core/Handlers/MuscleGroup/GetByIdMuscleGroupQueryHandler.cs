@@ -21,7 +21,7 @@ public class GetByIdMuscleGroupQueryHandler(FitnessWebDbContext fitnessDbContext
                         Id = ms.Id,
                         Name = ms.Name
                     })
-                    .ToList() 
+                    .ToList()
             })
             .FirstOrDefaultAsync(mg => mg.Id == request.Id, cancellationToken);
 

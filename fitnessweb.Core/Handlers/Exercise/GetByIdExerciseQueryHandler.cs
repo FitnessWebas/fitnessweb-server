@@ -9,7 +9,7 @@ public class GetByIdExerciseQueryHandler(FitnessWebDbContext fitnessDbContext) :
 {
     public async Task<Domain.Dtos.ExerciseInfoDto> Handle(GetByIdExerciseQuery request, CancellationToken cancellationToken)
     {
-        
+
         var exercise = await fitnessDbContext.Exercises
             .Where(e => e.Id == request.Id)
             .Select(e => new Domain.Dtos.ExerciseInfoDto
@@ -30,7 +30,7 @@ public class GetByIdExerciseQueryHandler(FitnessWebDbContext fitnessDbContext) :
             })
             .AsNoTracking()
             .FirstOrDefaultAsync(cancellationToken);
-        
+
         return exercise ?? throw new NullReferenceException("Exercise not found");
     }
 }

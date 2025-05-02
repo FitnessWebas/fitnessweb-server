@@ -10,7 +10,7 @@ public class CreateUserCommandHandler(FitnessWebDbContext fitnessDbContext) : IR
     public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         string hashedPassword = PasswordHasher.Hash(request.Password);
-        
+
         var user = new Domain.Entities.User
         {
             FirstName = request.FirstName,
@@ -22,7 +22,7 @@ public class CreateUserCommandHandler(FitnessWebDbContext fitnessDbContext) : IR
 
         await fitnessDbContext.Users.AddAsync(user, cancellationToken);
         await fitnessDbContext.SaveChangesAsync(cancellationToken);
-        
+
         return Unit.Value;
     }
 }

@@ -27,14 +27,14 @@ public class UserController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpPatch("Update")]
     public async Task<IActionResult> Update(UpdateUserCommand command)
     {
         var result = await Mediator.Send(command);
         return Ok(result);
     }
-    
+
     [HttpPost("VerifyPassword")]
     public async Task<IActionResult> VerifyPassword(VerifyPasswordCommand command)
     {

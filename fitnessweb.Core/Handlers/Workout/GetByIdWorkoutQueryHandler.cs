@@ -9,11 +9,11 @@ public class GetByIdWorkoutQueryHandler(FitnessWebDbContext fitnessDbContext) : 
 {
     public async Task<Domain.Dtos.WorkoutInfoDto> Handle(GetByIdWorkoutQuery request, CancellationToken cancellationToken)
     {
-        
+
         if (request.Id == Guid.Empty)
             throw new ArgumentException($"No workout id provided.");
-        
-        var workout =  await fitnessDbContext.Workouts
+
+        var workout = await fitnessDbContext.Workouts
                 .Where(w => w.Id == request.Id)
                 .Select(w => new Domain.Dtos.WorkoutInfoDto
                 {
@@ -48,6 +48,6 @@ public class GetByIdWorkoutQueryHandler(FitnessWebDbContext fitnessDbContext) : 
                 .FirstOrDefaultAsync(cancellationToken);
 
         return workout ?? throw new Exception($"Workout id: {request.Id} does not exist.");
-        
+
     }
 }

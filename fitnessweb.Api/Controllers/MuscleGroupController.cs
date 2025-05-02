@@ -13,7 +13,7 @@ namespace fitnessweb.Api.Controllers
         public async Task<IActionResult> GetAll([FromQuery] GetAllMuscleGroupsQuery query)
         {
             var result = await Mediator.Send(query);
-            
+
             var options = new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles
@@ -28,7 +28,7 @@ namespace fitnessweb.Api.Controllers
         public async Task<IActionResult> GetById([FromQuery] GetByIdMuscleGroupQuery query)
         {
             var result = await Mediator.Send(query);
-            
+
             var options = new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles

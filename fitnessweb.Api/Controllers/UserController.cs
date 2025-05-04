@@ -35,8 +35,8 @@ public class UserController : BaseController
         return Ok(result);
     }
 
-    [HttpPost("VerifyPassword")]
-    public async Task<IActionResult> VerifyPassword(VerifyPasswordCommand command)
+    [HttpPost("Authenticate")]
+    public async Task<IActionResult> Authenticate(AuthenticateCommand command)
     {
         var result = await Mediator.Send(command);
         return Ok(result);

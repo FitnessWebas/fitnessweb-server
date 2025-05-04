@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace fitnessweb.Core.Handlers.User;
 
-public class VerifyPasswordCommandHandler(FitnessWebDbContext fitnessDbContext) : IRequestHandler<VerifyPasswordCommand, bool>
+public class AuthenticateCommandHandler(FitnessWebDbContext fitnessDbContext) : IRequestHandler<AuthenticateCommand, bool>
 {
-    public async Task<bool> Handle(VerifyPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
     {
         var user = await fitnessDbContext.Users.
             FirstOrDefaultAsync(u => u.Username == request.Username, cancellationToken);

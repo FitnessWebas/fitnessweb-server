@@ -12,15 +12,16 @@ public class GoalParameters
 
 public static class WorkoutGoalParameters
 {
-    public static GoalParameters Get(Goal goal) =>
-        goal switch
+    public static GoalParameters Get(Goal goal, int time)
+    {
+        var parameters = goal switch
         {
             Goal.LoseWeight => new GoalParameters
             {
-                Sets = (2, 3),
+                Sets = (3, 4),
                 RepsPerSet = (12, 20),
-                RestBetweenSetsSeconds = 30,
-                RestBetweenExercisesSeconds = 45
+                RestBetweenSetsSeconds = 60,
+                RestBetweenExercisesSeconds = 60
             },
             Goal.GainMuscle => new GoalParameters
             {
@@ -38,4 +39,29 @@ public static class WorkoutGoalParameters
             },
             _ => throw new ArgumentOutOfRangeException(nameof(goal), "Unknown goal type")
         };
+        
+        if (goal == Goal.LoseWeight && time >= 60 && time < 90)
+        {
+            parameters.Sets = (4, 5);
+            parameters.RepsPerSet = (15, 25);
+            parameters.RestBetweenSetsSeconds = 75;
+            parameters.RestBetweenExercisesSeconds = 75;
+        }
+        if (goal == Goal.LoseWeight && time >= 90)
+        {
+            parameters.Sets = (4, 5);
+            parameters.RepsPerSet = (20, 25);
+            parameters.RestBetweenSetsSeconds = 90;
+            parameters.RestBetweenExercisesSeconds = 90;
+        }
+        if (goal == Goal.GainMuscle && time > 75)
+        {
+            parameters.Sets = (4, 5);
+            parameters.RepsPerSet = (8, 14);
+            parameters.RestBetweenSetsSeconds = 120;
+            parameters.RestBetweenExercisesSeconds = 120;
+        }
+        
+        return parameters;
+    }
 }

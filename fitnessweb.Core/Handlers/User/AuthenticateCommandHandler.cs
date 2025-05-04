@@ -1,23 +1,26 @@
 using fitnessweb.Core.Commands;
 using fitnessweb.Core.Helpers;
+using fitnessweb.Core.Services.Interfaces;
 using fitnessweb.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace fitnessweb.Core.Handlers.User;
 
-public class AuthenticateCommandHandler(FitnessWebDbContext fitnessDbContext) : IRequestHandler<AuthenticateCommand, bool>
+public class AuthenticateCommandHandler(
+    FitnessWebDbContext fitnessDbContext,
+    IJwtService jwtService) : IRequestHandler<AuthenticateCommand, string?>
 {
-    public async Task<bool> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
+    public async Task<string?> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
     {
         var user = await fitnessDbContext.Users.
             FirstOrDefaultAsync(u => u.Username == request.Username, cancellationToken);
 
-        if (user == null)
+        if (user is null || PasswordHasher.Verify(request.Password, user.Password) is false)
         {
-            throw new UnauthorizedAccessException("Invalid username.");
+            return null;
         }
 
-        return PasswordHasher.Verify(request.Password, user.Password);
+        return jwtService.GenerateJwtToken(user);
     }
 }

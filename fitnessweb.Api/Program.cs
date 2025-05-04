@@ -1,4 +1,6 @@
 using fitnessweb.Core.Commands;
+using fitnessweb.Core.Services;
+using fitnessweb.Core.Services.Interfaces;
 using fitnessweb.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<FitnessWebDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<DbContext, FitnessWebDbContext>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

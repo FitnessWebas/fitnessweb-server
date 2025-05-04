@@ -11,7 +11,13 @@ public class UserController : BaseController
     public async Task<IActionResult> Create(CreateUserCommand command)
     {
         var result = await Mediator.Send(command);
-        return Ok(result);
+
+        if (result is false)
+        {
+            return BadRequest("User already exists");
+        }
+        
+        return Ok("User created successfully");
     }
 
     [HttpGet("GetAll")]
@@ -39,6 +45,13 @@ public class UserController : BaseController
     public async Task<IActionResult> Authenticate(AuthenticateCommand command)
     {
         var result = await Mediator.Send(command);
+
+        if (result is null)
+        {
+            return BadRequest("Wrong username or password");
+        }
+        
         return Ok(result);
     }
+    
 }

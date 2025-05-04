@@ -53,4 +53,17 @@ public class UserController : BaseController
         
         return Ok(result);
     }
+    
+    [HttpPost("RefreshTokens")]
+    public async Task<IActionResult> RefreshTokens(GetRefreshTokenQuery query)
+    {
+        var result = await Mediator.Send(query);
+
+        if (result is null)
+        {
+            return Unauthorized("Invalid refresh token");
+        }
+        
+        return Ok(result);
+    }
 }

@@ -1,8 +1,9 @@
+using fitnessweb.Domain.Dtos;
 using MediatR;
 
 namespace fitnessweb.Core.Commands;
 
-public class AuthenticateCommand : IRequest<string?>
+public class AuthenticateCommand : IRequest<TokenResponseDto?>
 {
     public required string Username { get; set; }
     public required string Password { get; set; }

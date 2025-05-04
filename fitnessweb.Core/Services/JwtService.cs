@@ -5,6 +5,7 @@ using fitnessweb.Core.Services.Interfaces;
 using fitnessweb.Domain.Entities;
 using fitnessweb.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
+using JwtConstants = fitnessweb.Domain.Constants.JwtConstants;
 
 namespace fitnessweb.Core.Services;
 
@@ -26,7 +27,7 @@ public class JwtService(FitnessWebDbContext fitnessDbContext,
             issuer: configuration.GetValue<string>("JwtSettings:Issuer"),
             audience: configuration.GetValue<string>("JwtSettings:Audience"),
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(15),
+            expires: DateTime.UtcNow.AddMinutes(JwtConstants.JwtTokenExpiryInMinutes),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512)
         );
         
@@ -37,7 +38,7 @@ public class JwtService(FitnessWebDbContext fitnessDbContext,
     {
         var refreshToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         user.RefreshToken = refreshToken;
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(JwtConstants.RefreshTokenExpiryInDays);
         
         await fitnessDbContext.SaveChangesAsync();
         return refreshToken;

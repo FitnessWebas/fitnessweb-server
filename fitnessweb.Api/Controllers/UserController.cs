@@ -53,5 +53,4 @@ public class UserController : BaseController
         
         return Ok(result);
     }
-    
 }

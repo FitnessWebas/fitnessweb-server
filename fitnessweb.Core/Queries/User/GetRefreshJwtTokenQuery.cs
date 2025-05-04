@@ -1,9 +1,8 @@
-﻿using fitnessweb.Domain.Dtos;
-using MediatR;
+﻿using MediatR;
 
 namespace fitnessweb.Core.Queries;
 
-public class GetRefreshTokenQuery : IRequest<TokenResponseDto?>
+public class GetRefreshJwtTokenQuery : IRequest<string?>
 {
     public Guid UserId { get; set; }
     public required string RefreshToken { get; set; }

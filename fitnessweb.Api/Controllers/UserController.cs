@@ -1,6 +1,7 @@
 using fitnessweb.Core.Commands;
 using fitnessweb.Core.Queries;
-using MediatR;
+using fitnessweb.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fitnessweb.Api.Controllers;
@@ -41,6 +42,7 @@ public class UserController : BaseController
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpPost("Authenticate")]
     public async Task<IActionResult> Authenticate(AuthenticateCommand command)
     {
@@ -51,11 +53,28 @@ public class UserController : BaseController
             return BadRequest("Wrong username or password");
         }
         
+        SetRefreshTokenHttpOnly(result.RefreshToken);
+        
         return Ok(result);
     }
     
-    [HttpPost("RefreshTokens")]
-    public async Task<IActionResult> RefreshTokens(GetRefreshTokenQuery query)
+    [HttpPost("Logout")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Append("refreshToken", string.Empty, new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTimeOffset.UtcNow.AddDays(-1),
+            SameSite = SameSiteMode.None, // Strict or Lax
+            Secure = false // true
+        });
+
+        return Ok("Logged out successfully.");
+    }
+    
+    [AllowAnonymous]
+    [HttpPost("RefreshJwtToken")]
+    public async Task<IActionResult> RefreshJwtToken(GetRefreshJwtTokenQuery query)
     {
         var result = await Mediator.Send(query);
 
@@ -65,5 +84,17 @@ public class UserController : BaseController
         }
         
         return Ok(result);
+    }
+    
+    private void SetRefreshTokenHttpOnly(string refreshToken)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTimeOffset.UtcNow.AddDays(JwtConstants.RefreshTokenExpiryInDays),
+            SameSite = SameSiteMode.None, // Strict or Lax
+            Secure = false // true
+        };
+        Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
 }

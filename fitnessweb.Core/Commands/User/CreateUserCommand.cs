@@ -1,8 +1,9 @@
+using fitnessweb.Domain.Entities;
 using MediatR;
 
 namespace fitnessweb.Core.Commands;
 
-public class CreateUserCommand : IRequest<Unit>
+public class CreateUserCommand : IRequest<bool>
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }

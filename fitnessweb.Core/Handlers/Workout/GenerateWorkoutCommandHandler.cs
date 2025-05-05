@@ -19,18 +19,18 @@ public class GenerateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext)
                         e.Muscles.Any(m => request.MuscleGroups.Contains(m.MuscleGroupId)))
             .ToListAsync(cancellationToken);
 
+        if (!Enum.IsDefined(typeof(Goal), (Goal)request.Goal) ||
+            !Enum.IsDefined(typeof(FitnessLevel), (FitnessLevel)request.Difficulty) ||
+            request.Equipment.Any(e => !Enum.IsDefined(typeof(Equipment), (Equipment)e)))
+        {
+            throw new Exception("Bad enum value.");
+        }
         
         if (request.Equipment.Any(reqEq => !validExercises.Any(e => e.Equipment == reqEq)))
         {
             throw new Exception("No exercises match your selection. \n Please select additional muscle groups.");
         }
-
-        if (!Enum.IsDefined(typeof(Goal), (Goal)request.Goal) ||
-            !Enum.IsDefined(typeof(FitnessLevel), (FitnessLevel)request.Difficulty) ||
-            request.Equipment.Any(e => !Enum.IsDefined(typeof(Equipment), e)))
-        {
-            throw new Exception("Bad enum value.");
-        }
+        
         
         if (!await fitnessDbContext.Users.AnyAsync(u => u.Id == request.UserId,cancellationToken))
         {
@@ -113,8 +113,6 @@ public class GenerateWorkoutCommandHandler(FitnessWebDbContext fitnessDbContext)
             }
 
             totalSeconds += totalTimeForExercise;
-            Console.WriteLine($"{i} Current e: {usedEquipment.Count} target equipment {request.Equipment.Count}");
-            Console.WriteLine($"{i} Current e: {coveredMuscleGroups.Count} target muscles {request.MuscleGroups.Count}");
         }
 
         if (usedEquipment.Count < request.Equipment.Count || coveredMuscleGroups.Count < request.MuscleGroups.Count)

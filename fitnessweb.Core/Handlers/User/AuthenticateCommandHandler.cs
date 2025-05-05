@@ -10,9 +10,9 @@ namespace fitnessweb.Core.Handlers.User;
 
 public class AuthenticateCommandHandler(
     FitnessWebDbContext fitnessDbContext,
-    IJwtService jwtService) : IRequestHandler<AuthenticateCommand, TokenResponseWithUserIdDto?>
+    IJwtService jwtService) : IRequestHandler<AuthenticateCommand, AccessTokenUserIdDto?>
 {
-    public async Task<TokenResponseWithUserIdDto?> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
+    public async Task<AccessTokenUserIdDto?> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
     {
         var user = await fitnessDbContext.Users.
             FirstOrDefaultAsync(u => u.Username == request.Username, cancellationToken);
@@ -21,14 +21,13 @@ public class AuthenticateCommandHandler(
         {
             return null;
         }
-
-        var response = new TokenResponseWithUserIdDto
+        
+        var response = new AccessTokenUserIdDto
         {
             AccessToken = jwtService.GenerateJwtToken(user),
-            RefreshToken = await jwtService.GenerateAndSaveRefreshToken(user),
             UserId = user.Id
         };
-
+        
         return response;
     }
 }

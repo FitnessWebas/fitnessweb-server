@@ -1,17 +1,24 @@
 using fitnessweb.Core.Commands;
 using fitnessweb.Core.Queries;
-using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fitnessweb.Api.Controllers;
 
 public class UserController : BaseController
 {
+    [AllowAnonymous]
     [HttpPost("Create")]
     public async Task<IActionResult> Create(CreateUserCommand command)
     {
         var result = await Mediator.Send(command);
-        return Ok(result);
+
+        if (result is false)
+        {
+            return BadRequest("User already exists");
+        }
+        
+        return Ok("User created successfully");
     }
 
     [HttpGet("GetAll")]
@@ -35,10 +42,17 @@ public class UserController : BaseController
         return Ok(result);
     }
 
-    [HttpPost("VerifyPassword")]
-    public async Task<IActionResult> VerifyPassword(VerifyPasswordCommand command)
+    [AllowAnonymous]
+    [HttpPost("Authenticate")]
+    public async Task<IActionResult> Authenticate(AuthenticateCommand command)
     {
         var result = await Mediator.Send(command);
+
+        if (result is null)
+        {
+            return BadRequest("Wrong username or password");
+        }
+        
         return Ok(result);
     }
 }

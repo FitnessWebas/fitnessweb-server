@@ -1,14 +1,22 @@
 using fitnessweb.Core.Queries;
+using fitnessweb.Domain.Dtos;
 using fitnessweb.Infrastructure;
 using MediatR;
 
 namespace fitnessweb.Core.Handlers.User;
 
-public class GetByIdUserQueryHandler(FitnessWebDbContext fitnessDbContext) : IRequestHandler<GetByIdUserQuery, Domain.Entities.User>
+public class GetByIdUserQueryHandler(FitnessWebDbContext fitnessDbContext) : IRequestHandler<GetByIdUserQuery, UserInfoDto>
 {
-    public async Task<Domain.Entities.User> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
+    public async Task<UserInfoDto> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
     {
-        return await fitnessDbContext.Users.FindAsync([request.Id], cancellationToken)
-               ?? throw new NullReferenceException();
+        var user = await fitnessDbContext.Users.FindAsync([request.UserId], cancellationToken)
+            ?? throw new NullReferenceException();
+        return new UserInfoDto
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Username = user.Username,
+        };
     }
 }

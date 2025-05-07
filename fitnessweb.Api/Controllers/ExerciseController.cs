@@ -1,6 +1,7 @@
 ﻿using fitnessweb.Core.Commands;
 using fitnessweb.Core.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace fitnessweb.Api.Controllers;
@@ -14,6 +15,7 @@ public class ExerciseController : BaseController
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll([FromQuery] GetAllExercisesQuery query)
     {

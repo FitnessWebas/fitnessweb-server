@@ -1,5 +1,6 @@
 ﻿using fitnessweb.Core.Commands;
 using fitnessweb.Infrastructure;
+using fitnessweb.Core.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +25,10 @@ public class UpdateUserCommandHandler(FitnessWebDbContext fitnessDbContext) : IR
             user.Email = command.Email;
 
         if (command.Password != null)
-            user.Password = command.Password;
+        {
+            string hashedPassword = PasswordHasher.Hash(command.Password);
+            user.Password = hashedPassword;
+        }
 
         if (command.Username != null)
             user.Username = command.Username;

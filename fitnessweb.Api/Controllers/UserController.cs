@@ -34,6 +34,14 @@ public class UserController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
+    
+    [AllowAnonymous]
+    [HttpGet("GetByEmail")]
+    public async Task<IActionResult> GetByEmail([FromQuery] GetByEmailUserQuery query)
+    {
+        var result = await Mediator.Send(query);
+        return Ok(result);
+    }
 
     [HttpPatch("Update")]
     public async Task<IActionResult> Update(UpdateUserCommand command)

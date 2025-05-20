@@ -26,7 +26,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretToken"]!)),
             ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero
         };
+        
     });
 builder.Services.AddScoped<DbContext, FitnessWebDbContext>();
 builder.Services.AddScoped<IJwtService, JwtService>();
@@ -55,6 +57,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseCors();
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

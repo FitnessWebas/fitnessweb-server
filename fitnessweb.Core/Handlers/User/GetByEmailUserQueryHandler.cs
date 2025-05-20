@@ -1,6 +1,5 @@
 using fitnessweb.Core.Queries;
 using fitnessweb.Infrastructure;
-using fitnessweb.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

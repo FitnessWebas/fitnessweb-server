@@ -28,7 +28,7 @@ cd fitnessweb-server
 
 ### Configuration
 
-Create an `appsettings.json` file following the example provided in `appsettings.Example.json`:
+Create an `appsettings.json` file following the example provided in `appsettings.Example.json`.
 
 ## Running the back-end
 ```bash
